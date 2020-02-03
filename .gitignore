@@ -1,0 +1,8 @@
+*.obj
+*.ilk
+*.o
+*.pdb
+*.exe
+*.c
+*.lst
+.vs/
