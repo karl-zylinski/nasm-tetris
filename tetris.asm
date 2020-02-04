@@ -193,88 +193,113 @@ spawn_piece:
     push ebp
     mov ebp, esp
 
+    ; pink      I
+    ; red       T
+    ; white     Z
+    ; yellow    inv_Z
+    ; blue      L
+    ; green     inv_L
+
     rdtsc ; use clock as 'random number'
-    and eax, 0x5
-    mov [block_type], al
-    cmp al, 0
-    je .I
-    cmp al, 1
-    je .inv_L
-    cmp al, 2
-    je .L
-    cmp al, 3
-    je .Z
+    mov edx, 0
+    mov ecx, 5
+    div ecx ; remainder in edx / dl
+    mov [block_type], dl
+    cmp dl, 0
+    je .pink_I
+    cmp dl, 1
+    je .red_T
+    cmp dl, 2
+    je .white_Z
+    cmp dl, 3
+    je .yellow_inv_Z
+    cmp dl, 4
+    je .blue_L
+    cmp dl, 5
+    je .green_inv_L
 
-    .inv_Z:
+    .pink_I:
     mov [block_r], byte 255
-    mov [block_g], byte 255
+    mov [block_g], byte 0
     mov [block_b], byte 255
-
     mov [block_x + 0], byte 3
-    mov [block_y + 0], byte 1
+    mov [block_y + 0], byte 0
     mov [block_x + 1], byte 4
-    mov [block_y + 1], byte 1
-    mov [block_x + 2], byte 2
-    mov [block_y + 2], byte 2
-    mov [block_x + 3], byte 3
-    mov [block_y + 3], byte 2
-
+    mov [block_y + 1], byte 0
+    mov [block_x + 2], byte 5
+    mov [block_y + 2], byte 0
+    mov [block_x + 3], byte 6
+    mov [block_y + 3], byte 0
     jmp .e
 
-    .I:
+    .red_T:
     mov [block_r], byte 255
     mov [block_g], byte 0
     mov [block_b], byte 0
-    mov [block_x + 0], byte 3
-    mov [block_y + 0], byte 1
-    mov [block_x + 1], byte 4
-    mov [block_y + 1], byte 1
-    mov [block_x + 2], byte 1
-    mov [block_y + 2], byte 2
-    mov [block_x + 3], byte 1
-    mov [block_y + 3], byte 2
+    mov [block_x + 0], byte 4
+    mov [block_y + 0], byte 0
+    mov [block_x + 1], byte 5
+    mov [block_y + 1], byte 0
+    mov [block_x + 2], byte 6
+    mov [block_y + 2], byte 0
+    mov [block_x + 3], byte 5
+    mov [block_y + 3], byte 1
     jmp .e
 
-    .inv_L:
+    .white_Z:
+    mov [block_r], byte 255
+    mov [block_g], byte 255
+    mov [block_b], byte 255
+    mov [block_x + 0], byte 3
+    mov [block_y + 0], byte 0
+    mov [block_x + 1], byte 4
+    mov [block_y + 1], byte 0
+    mov [block_x + 2], byte 4
+    mov [block_y + 2], byte 1
+    mov [block_x + 3], byte 5
+    mov [block_y + 3], byte 1
+    jmp .e
+
+    .yellow_inv_Z:
+    mov [block_r], byte 255
+    mov [block_g], byte 255
+    mov [block_b], byte 0
+    mov [block_x + 0], byte 4
+    mov [block_y + 0], byte 0
+    mov [block_x + 1], byte 5
+    mov [block_y + 1], byte 0
+    mov [block_x + 2], byte 3
+    mov [block_y + 2], byte 1
+    mov [block_x + 3], byte 4
+    mov [block_y + 3], byte 1
+    jmp .e
+
+    .blue_L:
+    mov [block_r], byte 0
+    mov [block_g], byte 0
+    mov [block_b], byte 255
+    mov [block_x + 0], byte 4
+    mov [block_y + 0], byte 0
+    mov [block_x + 1], byte 5
+    mov [block_y + 1], byte 0
+    mov [block_x + 2], byte 6
+    mov [block_y + 2], byte 0
+    mov [block_x + 3], byte 4
+    mov [block_y + 3], byte 1
+    jmp .e
+
+    .green_inv_L:
     mov [block_r], byte 0
     mov [block_g], byte 255
     mov [block_b], byte 0
     mov [block_x + 0], byte 4
-    mov [block_y + 0], byte 1
-    mov [block_x + 1], byte 3
-    mov [block_y + 1], byte 1
-    mov [block_x + 2], byte 3
-    mov [block_y + 2], byte 2
-    mov [block_x + 3], byte 3
-    mov [block_x + 3], byte 3
-    jmp .e
-
-    .L:
-    mov [block_r], byte 0
-    mov [block_g], byte 0
-    mov [block_b], byte 255
-    mov [block_x + 0], byte 3
-    mov [block_y + 0], byte 1
-    mov [block_x + 1], byte 3
-    mov [block_y + 1], byte 2
-    mov [block_x + 2], byte 3
-    mov [block_y + 2], byte 4
-    mov [block_x + 3], byte 4
-    mov [block_y + 3], byte 3
-    jmp .e
-
-    .Z:
-    mov [block_r], byte 255
-    mov [block_g], byte 255
-    mov [block_b], byte 0
-    mov [block_x + 0], byte 2
-    mov [block_y + 0], byte 1
-    mov [block_x + 1], byte 3
-    mov [block_y + 1], byte 1
-    mov [block_x + 2], byte 3
-    mov [block_y + 2], byte 2
-    mov [block_x + 3], byte 4
-    mov [block_y + 3], byte 2
+    mov [block_y + 0], byte 0
+    mov [block_x + 1], byte 5
+    mov [block_y + 1], byte 0
+    mov [block_x + 2], byte 6
+    mov [block_y + 2], byte 0
+    mov [block_x + 3], byte 6
+    mov [block_y + 3], byte 1
 
     .e:
 
@@ -394,7 +419,7 @@ window_title: db "Tetris!", 0
 ; frame state
 frame_start: dd 0.0
 cur_time: dd 0.0
-time_per_frame: dd 0.5
+time_per_frame: dd 0.25
 
 ; gfx info
 board_width equ 10
