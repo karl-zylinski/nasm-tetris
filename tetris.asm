@@ -157,6 +157,34 @@ tick:
     call _xdisp_set
     add esp, 5*4
 
+    ; bottom collision detection
+
+    mov eax, [block_y]
+    cmp eax, board_height - 1
+    je .spawn
+    mov eax, [block_y + 1*4]
+    cmp eax, board_height - 1
+    je .spawn
+    mov eax, [block_y + 2*4]
+    cmp eax, board_height - 1
+    je .spawn
+    mov eax, [block_y + 3*4]
+    cmp eax, board_height - 1
+    je .spawn
+    jmp .no_spawn
+
+    ; for block - to - map collision detection, do similar to
+    ; move_piece_to_map ---- put the "find map idx" stuff in func?
+    ; in general, check against NEW coordinate, before setting it,
+    ; otherwise we can't move "at bottom" and also we have to undo
+    ; gravity
+
+    .spawn:
+    call move_piece_to_map
+    call spawn_piece
+
+    .no_spawn:
+
     mov esp, ebp
     pop ebp
     ret
@@ -167,14 +195,33 @@ move_piece_to_map:
 
     ;index is pos y * board_width + x
     
-    ;;movzx eax, byte [block_y]
-    ;;movzx rbx, byte [board_width]
-    ;;mul bl
-    ;add al, byte [block_x]
-    ;add al, 
+    mov eax, [block_y]
+    mov ebx, board_width
+    mul ebx
+    add eax, [block_x]
+    add eax, map
+    mov dword [eax], 1
 
-    ;add eax, ecx
+    mov eax, [block_y + 1*4]
+    mov ebx, board_width
+    mul ebx
+    add eax, [block_x + 1*4]
+    add eax, map
+    mov dword [eax], 1
 
+    mov eax, [block_y + 2*4]
+    mov ebx, board_width
+    mul ebx
+    add eax, [block_x + 2*4]
+    add eax, map
+    mov dword [eax], 1
+
+    mov eax, [block_y + 3*4]
+    mov ebx, board_width
+    mul ebx
+    add eax, [block_x + 3*4]
+    add eax, map
+    mov dword [eax], 1
 
     mov esp, ebp
     pop ebp
@@ -198,7 +245,7 @@ spawn_piece:
     mov ecx, 5
     div ecx ; remainder in edx / dl
     add edx, 1
-    mov [block_type], edx
+
     cmp edx, 1
     je .pink_I
     cmp edx, 2
@@ -320,46 +367,46 @@ _main:
     movss dword [frame_start], xmm0
 
     .window_loop:
-        mov cl, [left_held]
+        mov ecx, [left_held]
         call _xdisp_left_held
-        mov [left_held], al
-        xor al, cl ; eax 1 held status changed
-        cmp al, 0 
+        mov [left_held], eax
+        xor eax, ecx ; eax 1 held status changed
+        cmp eax, 0 
         je .right ; no change
-        cmp cl, 0 ; did we hold before?
+        cmp ecx, 0 ; did we hold before?
         jne .right
         mov [left_pressed], dword 1
 
         .right:
-        mov cl, [right_held]
+        mov ecx, [right_held]
         call _xdisp_right_held
-        mov [right_held], al
-        xor al, cl ; eax 1 held status changed
-        cmp al, 0 
+        mov [right_held], eax
+        xor eax, ecx ; eax 1 held status changed
+        cmp eax, 0 
         je .down ; no change
-        cmp cl, 0 ; did we hold before?
+        cmp ecx, 0 ; did we hold before?
         jne .down
         mov [right_pressed], dword 1
 
         .down:
-        mov cl, [down_held]
+        mov ecx, [down_held]
         call _xdisp_down_held
-        mov [down_held], al
-        xor al, cl ; eax 1 held status changed
-        cmp al, 0 
+        mov [down_held], eax
+        xor eax, ecx ; eax 1 held status changed
+        cmp eax, 0 
         je .up ; no change
-        cmp cl, 0 ; did we hold before?
+        cmp ecx, 0 ; did we hold before?
         jne .up
         mov [down_pressed], dword 1
 
         .up:
-        mov cl, [up_held]
+        mov ecx, [up_held]
         call _xdisp_up_held
-        mov [up_held], al
-        xor al, cl ; eax 1 held status changed
-        cmp al, 0 
+        mov [up_held], eax
+        xor eax, ecx ; eax 1 held status changed
+        cmp eax, 0 
         je .input_end ; no change
-        cmp cl, 0 ; did we hold before?
+        cmp ecx, 0 ; did we hold before?
         jne .input_end
         mov [up_pressed], dword 1
 
@@ -376,6 +423,7 @@ _main:
         movss dword [frame_start], xmm0
 
         call tick
+
         mov [up_pressed], dword 0
         mov [down_pressed], dword 0
         mov [left_pressed], dword 0
@@ -424,7 +472,6 @@ tile_spacing equ 2
 ; game state
 block_x: times 4 dd 0
 block_y: times 4 dd 0
-block_type: dd 0 ; see comment in 'spawn_piece'
 block_r: dd 0
 block_g: dd 0
 block_b: dd 0
