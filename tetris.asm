@@ -22,166 +22,138 @@ tick:
     push 0
     push 0
     push 0
-    movzx eax, byte [block_y + 0]
-    push eax
-    movzx eax, byte [block_x + 0]
-    push eax
+    push dword [block_y + 0]
+    push dword [block_x + 0]
     call _xdisp_set
     add esp, 5*4
 
     push 0
     push 0
     push 0
-    movzx eax, byte [block_y + 1]
-    push eax
-    movzx eax, byte [block_x + 1]
-    push eax
+    push dword [block_y + 1*4]
+    push dword [block_x + 1*4]
     call _xdisp_set
     add esp, 5*4
 
     push 0
     push 0
     push 0
-    movzx eax, byte [block_y + 2]
-    push eax
-    movzx eax, byte [block_x + 2]
-    push eax
+    push dword [block_y + 2*4]
+    push dword [block_x + 2*4]
     call _xdisp_set
     add esp, 5*4
 
     push 0
     push 0
     push 0
-    movzx eax, byte [block_y + 3]
-    push eax
-    movzx eax, byte [block_x + 3]
-    push eax
+    push dword [block_y + 3*4]
+    push dword [block_x + 3*4]
     call _xdisp_set
     add esp, 5*4
 
     ; move piece
 
-    mov al, [left_pressed]
-    cmp al, 1
+    mov eax, [left_pressed]
+    cmp eax, 1
     jne .right
 
-    mov al, [block_x + 0]
-    sub al, 1
-    mov [block_x + 0], al
-    mov al, [block_x + 1]
-    sub al, 1
-    mov [block_x + 1], al
-    mov al, [block_x + 2]
-    sub al, 1
-    mov [block_x + 2], al
-    mov al, [block_x + 3]
-    sub al, 1
-    mov [block_x + 3], al
+    mov eax, [block_x + 0]
+    sub eax, 1
+    mov [block_x + 0], eax
+    mov eax, [block_x + 1*4]
+    sub eax, 1
+    mov [block_x + 1*4], eax
+    mov eax, [block_x + 2*4]
+    sub eax, 1
+    mov [block_x + 2*4], eax
+    mov eax, [block_x + 3*4]
+    sub eax, 1
+    mov [block_x + 3*4], eax
 
     .right:
-    mov al, [right_pressed]
-    cmp al, 1
+    mov eax, [right_pressed]
+    cmp eax, 1
     jne .down
 
-    mov al, [block_x + 0]
-    add al, 1
-    mov [block_x + 0], al
-    mov al, [block_x + 1]
-    add al, 1
-    mov [block_x + 1], al
-    mov al, [block_x + 2]
-    add al, 1
-    mov [block_x + 2], al
-    mov al, [block_x + 3]
-    add al, 1
-    mov [block_x + 3], al
+    mov eax, [block_x + 0]
+    add eax, 1
+    mov [block_x + 0], eax
+    mov eax, [block_x + 1*4]
+    add eax, 1
+    mov [block_x + 1*4], eax
+    mov eax, [block_x + 2*4]
+    add eax, 1
+    mov [block_x + 2*4], eax
+    mov eax, [block_x + 3*4]
+    add eax, 1
+    mov [block_x + 3*4], eax
     
     .down:
-    mov al, [down_pressed]
-    cmp al, 1
+    mov eax, [down_pressed]
+    cmp eax, 1
     jne .up
 
-    mov al, [block_y + 0]
-    add al, 1
-    mov [block_y + 0], al
-    mov al, [block_y + 1]
-    add al, 1
-    mov [block_y + 1], al
-    mov al, [block_y + 2]
-    add al, 1
-    mov [block_y + 2], al
-    mov al, [block_y + 3]
-    add al, 1
-    mov [block_y + 3], al
+    mov eax, [block_y + 0]
+    add eax, 1
+    mov [block_y + 0], eax
+    mov eax, [block_y + 1*4]
+    add eax, 1
+    mov [block_y + 1*4], eax
+    mov eax, [block_y + 2*4]
+    add eax, 1
+    mov [block_y + 2*4], eax
+    mov eax, [block_y + 3*4]
+    add eax, 1
+    mov [block_y + 3*4], eax
     
     .up:
     ; ROTATE!!!
 
     ; gravity
 
-    mov al, [block_y + 0]
-    add al, 1
-    mov [block_y + 0], al
-    mov al, [block_y + 1]
-    add al, 1
-    mov [block_y + 1], al
-    mov al, [block_y + 2]
-    add al, 1
-    mov [block_y + 2], al
-    mov al, [block_y + 3]
-    add al, 1
-    mov [block_y + 3], al
+    mov eax, [block_y + 0]
+    add eax, 1
+    mov [block_y + 0], eax
+    mov eax, [block_y + 1*4]
+    add eax, 1
+    mov [block_y + 1*4], eax
+    mov eax, [block_y + 2*4]
+    add eax, 1
+    mov [block_y + 2*4], eax
+    mov eax, [block_y + 3*4]
+    add eax, 1
+    mov [block_y + 3*4], eax
 
     ; draw piece
-    movzx eax, byte [block_b]
-    push eax
-    movzx eax, byte [block_g]
-    push eax
-    movzx eax, byte [block_r]
-    push eax
-    movzx eax, byte [block_y + 0]
-    push eax
-    movzx eax, byte [block_x + 0]
-    push eax
+    push dword [block_b]
+    push dword [block_g]
+    push dword [block_r]
+    push dword [block_y + 0]
+    push dword [block_x + 0]
     call _xdisp_set
     add esp, 5*4
 
-    movzx eax, byte [block_b]
-    push eax
-    movzx eax, byte [block_g]
-    push eax
-    movzx eax, byte [block_r]
-    push eax
-    movzx eax, byte [block_y + 1]
-    push eax
-    movzx eax, byte [block_x + 1]
-    push eax
+    push dword [block_b]
+    push dword [block_g]
+    push dword [block_r]
+    push dword [block_y + 1*4]
+    push dword [block_x + 1*4]
     call _xdisp_set
     add esp, 5*4
 
-    movzx eax, byte [block_b]
-    push eax
-    movzx eax, byte [block_g]
-    push eax
-    movzx eax, byte [block_r]
-    push eax
-    movzx eax, byte [block_y + 2]
-    push eax
-    movzx eax, byte [block_x + 2]
-    push eax
+    push dword [block_b]
+    push dword [block_g]
+    push dword [block_r]
+    push dword [block_y + 2*4]
+    push dword [block_x + 2*4]
     call _xdisp_set
     add esp, 5*4
 
-    movzx eax, byte [block_b]
-    push eax
-    movzx eax, byte [block_g]
-    push eax
-    movzx eax, byte [block_r]
-    push eax
-    movzx eax, byte [block_y + 3]
-    push eax
-    movzx eax, byte [block_x + 3]
-    push eax
+    push dword [block_b]
+    push dword [block_g]
+    push dword [block_r]
+    push dword [block_y + 3*4]
+    push dword [block_x + 3*4]
     call _xdisp_set
     add esp, 5*4
 
@@ -189,117 +161,139 @@ tick:
     pop ebp
     ret
 
+move_piece_to_map:
+    push ebp
+    mov ebp, esp
+
+    ;index is pos y * board_width + x
+    
+    ;;movzx eax, byte [block_y]
+    ;;movzx rbx, byte [board_width]
+    ;;mul bl
+    ;add al, byte [block_x]
+    ;add al, 
+
+    ;add eax, ecx
+
+
+    mov esp, ebp
+    pop ebp
+    ret 
+
 spawn_piece:
     push ebp
     mov ebp, esp
 
-    ; pink      I
-    ; red       T
-    ; white     Z
-    ; yellow    inv_Z
-    ; blue      L
-    ; green     inv_L
+    ; the different block_types, the names are approximiations of their shapes:
+    ; 0 nothing
+    ; 1 pink      I
+    ; 2 red       T
+    ; 3 white     Z
+    ; 4 yellow    inv_Z
+    ; 5 blue      L
+    ; 6 green     inv_L
 
     rdtsc ; use clock as 'random number'
     mov edx, 0
     mov ecx, 5
     div ecx ; remainder in edx / dl
-    mov [block_type], dl
-    cmp dl, 0
+    add edx, 1
+    mov [block_type], edx
+    cmp edx, 1
     je .pink_I
-    cmp dl, 1
+    cmp edx, 2
     je .red_T
-    cmp dl, 2
+    cmp edx, 3
     je .white_Z
-    cmp dl, 3
+    cmp edx, 4
     je .yellow_inv_Z
-    cmp dl, 4
+    cmp edx, 5
     je .blue_L
-    cmp dl, 5
+    cmp edx, 6
     je .green_inv_L
 
     .pink_I:
-    mov [block_r], byte 255
-    mov [block_g], byte 0
-    mov [block_b], byte 255
-    mov [block_x + 0], byte 3
-    mov [block_y + 0], byte 0
-    mov [block_x + 1], byte 4
-    mov [block_y + 1], byte 0
-    mov [block_x + 2], byte 5
-    mov [block_y + 2], byte 0
-    mov [block_x + 3], byte 6
-    mov [block_y + 3], byte 0
+    mov [block_r], dword 255
+    mov [block_g], dword 0
+    mov [block_b], dword 255
+    mov [block_x + 0], dword 3
+    mov [block_y + 0], dword 0
+    mov [block_x + 1*4], dword 4
+    mov [block_y + 1*4], dword 0
+    mov [block_x + 2*4], dword 5
+    mov [block_y + 2*4], dword 0
+    mov [block_x + 3*4], dword 6
+    mov [block_y + 3*4], dword 0
     jmp .e
 
     .red_T:
-    mov [block_r], byte 255
-    mov [block_g], byte 0
-    mov [block_b], byte 0
-    mov [block_x + 0], byte 4
-    mov [block_y + 0], byte 0
-    mov [block_x + 1], byte 5
-    mov [block_y + 1], byte 0
-    mov [block_x + 2], byte 6
-    mov [block_y + 2], byte 0
-    mov [block_x + 3], byte 5
-    mov [block_y + 3], byte 1
+    mov [block_r], dword 255
+    mov [block_g], dword 0
+    mov [block_b], dword 0
+    mov [block_x + 0], dword 4
+    mov [block_y + 0], dword 0
+    mov [block_x + 1*4], dword 5
+    mov [block_y + 1*4], dword 0
+    mov [block_x + 2*4], dword 6
+    mov [block_y + 2*4], dword 0
+    mov [block_x + 3*4], dword 5
+    mov [block_y + 3*4], dword 1
     jmp .e
 
     .white_Z:
-    mov [block_r], byte 255
-    mov [block_g], byte 255
-    mov [block_b], byte 255
-    mov [block_x + 0], byte 3
-    mov [block_y + 0], byte 0
-    mov [block_x + 1], byte 4
-    mov [block_y + 1], byte 0
-    mov [block_x + 2], byte 4
-    mov [block_y + 2], byte 1
-    mov [block_x + 3], byte 5
-    mov [block_y + 3], byte 1
+    mov [block_r], dword 255
+    mov [block_g], dword 255
+    mov [block_b], dword 255
+    mov [block_x + 0], dword 3
+    mov [block_y + 0], dword 0
+    mov [block_x + 1*4], dword 4
+    mov [block_y + 1*4], dword 0
+    mov [block_x + 2*4], dword 4
+    mov [block_y + 2*4], dword 1
+    mov [block_x + 3*4], dword 5
+    mov [block_y + 3*4], dword 1
     jmp .e
 
     .yellow_inv_Z:
-    mov [block_r], byte 255
-    mov [block_g], byte 255
-    mov [block_b], byte 0
-    mov [block_x + 0], byte 4
-    mov [block_y + 0], byte 0
-    mov [block_x + 1], byte 5
-    mov [block_y + 1], byte 0
-    mov [block_x + 2], byte 3
-    mov [block_y + 2], byte 1
-    mov [block_x + 3], byte 4
-    mov [block_y + 3], byte 1
+    mov [block_r], dword 255
+    mov [block_g], dword 255
+    mov [block_b], dword 0
+    mov [block_x + 0], dword 4
+    mov [block_y + 0], dword 0
+    mov [block_x + 1*4], dword 5
+    mov [block_y + 1*4], dword 0
+    mov [block_x + 2*4], dword 3
+    mov [block_y + 2*4], dword 1
+    mov [block_x + 3*4], dword 4
+    mov [block_y + 3*4], dword 1
     jmp .e
 
     .blue_L:
-    mov [block_r], byte 0
-    mov [block_g], byte 0
-    mov [block_b], byte 255
-    mov [block_x + 0], byte 4
-    mov [block_y + 0], byte 0
-    mov [block_x + 1], byte 5
-    mov [block_y + 1], byte 0
-    mov [block_x + 2], byte 6
-    mov [block_y + 2], byte 0
-    mov [block_x + 3], byte 4
-    mov [block_y + 3], byte 1
+    mov [block_r], dword 0
+    mov [block_g], dword 0
+    mov [block_b], dword 255
+    mov [block_x + 0], dword 4
+    mov [block_y + 0], dword 0
+    mov [block_x + 1*4], dword 5
+    mov [block_y + 1*4], dword 0
+    mov [block_x + 2*4], dword 6
+    mov [block_y + 2*4], dword 0
+    mov [block_x + 3*4], dword 4
+    mov [block_y + 3*4], dword 1
     jmp .e
 
     .green_inv_L:
-    mov [block_r], byte 0
-    mov [block_g], byte 255
-    mov [block_b], byte 0
-    mov [block_x + 0], byte 4
-    mov [block_y + 0], byte 0
-    mov [block_x + 1], byte 5
-    mov [block_y + 1], byte 0
-    mov [block_x + 2], byte 6
-    mov [block_y + 2], byte 0
-    mov [block_x + 3], byte 6
-    mov [block_y + 3], byte 1
+    mov [block_r], dword 0
+    mov [block_g], dword 255
+    mov [block_b], dword 0
+    mov [block_x + 0], dword 4
+    mov [block_y + 0], dword 0
+    mov [block_x + 1*4], dword 5
+    mov [block_y + 1*4], dword 0
+    mov [block_x + 2*4], dword 6
+    mov [block_y + 2*4], dword 0
+    mov [block_x + 3*4], dword 6
+    mov [block_y + 3*4], dword 1
 
     .e:
 
@@ -334,7 +328,7 @@ _main:
         je .right ; no change
         cmp cl, 0 ; did we hold before?
         jne .right
-        mov [left_pressed], byte 1
+        mov [left_pressed], dword 1
 
         .right:
         mov cl, [right_held]
@@ -345,7 +339,7 @@ _main:
         je .down ; no change
         cmp cl, 0 ; did we hold before?
         jne .down
-        mov [right_pressed], byte 1
+        mov [right_pressed], dword 1
 
         .down:
         mov cl, [down_held]
@@ -356,7 +350,7 @@ _main:
         je .up ; no change
         cmp cl, 0 ; did we hold before?
         jne .up
-        mov [down_pressed], byte 1
+        mov [down_pressed], dword 1
 
         .up:
         mov cl, [up_held]
@@ -367,7 +361,7 @@ _main:
         je .input_end ; no change
         cmp cl, 0 ; did we hold before?
         jne .input_end
-        mov [up_pressed], byte 1
+        mov [up_pressed], dword 1
 
         .input_end:
 
@@ -382,10 +376,10 @@ _main:
         movss dword [frame_start], xmm0
 
         call tick
-        mov [up_pressed], byte 0
-        mov [down_pressed], byte 0
-        mov [left_pressed], byte 0
-        mov [right_pressed], byte 0
+        mov [up_pressed], dword 0
+        mov [down_pressed], dword 0
+        mov [left_pressed], dword 0
+        mov [right_pressed], dword 0
 
         .cont:
         push 1
@@ -404,14 +398,14 @@ _main:
 section .data
 
 ;input state
-left_held: db 0
-right_held: db 0
-up_held: db 0
-down_held: db 0
-left_pressed: db 0
-right_pressed: db 0
-up_pressed: db 0
-down_pressed: db 0
+left_held: dd 0
+right_held: dd 0
+up_held: dd 0
+down_held: dd 0
+left_pressed: dd 0
+right_pressed: dd 0
+up_pressed: dd 0
+down_pressed: dd 0
 
 ; window info
 window_title: db "Tetris!", 0
@@ -428,10 +422,10 @@ tile_size equ 32
 tile_spacing equ 2
 
 ; game state
-block_x: times 4 db 0
-block_y: times 4 db 0
-block_type: db 0 ; 0 = I, 1 = inv L, 2 = L, 3 = Z, 4 = inv Z, 5 = T
-block_r: db 0
-block_g: db 0
-block_b: db 0
-map: times board_width*board_height db 0 ; index is pos x * board_width + y
+block_x: times 4 dd 0
+block_y: times 4 dd 0
+block_type: dd 0 ; see comment in 'spawn_piece'
+block_r: dd 0
+block_g: dd 0
+block_b: dd 0
+map: times board_width*board_height dd 0 ; index is pos y * board_width + x
